@@ -2,6 +2,13 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## How to run it:
+1. Install Node.js and npm
+2. cd into the directory
+3. Run this command: `npm run dev`
+NOTE: if you run into an error running that command, run this first:
+### `npm install --save cross-env`
+
 ## Available Scripts
 
 In the project directory, you can run:
