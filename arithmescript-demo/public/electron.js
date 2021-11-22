@@ -54,15 +54,22 @@ app.on("activate", () => {
 });
 
 ipcMain.on('asynchronous-message', (event, arg) => {
-  console.log("heyyyy",arg) // prints "heyyyy ping"
+  console.log(arg) // prints "heyyyy ping"
   fs.writeFile("data/test.txt", arg, err =>{
     if(err){
       console.log(err);
       return;
     }
   })
-
 })
+
+ipcMain.on('pull-data', (event, arg) =>{
+  fs.readFile("data/test.txt", function(err, data){
+    console.log(data.toString());
+    event.sender.send('Async-reply', data.toString());
+  })
+
+});
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

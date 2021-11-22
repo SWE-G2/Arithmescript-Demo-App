@@ -8,15 +8,21 @@ const { ipcRenderer } = window.require('electron');
 
 
 export class TextArea extends React.Component {
+
   render() {
     return (
       <CKEditor
         editor={ ClassicEditor }
 
         data="<p>Hello from CKEditor 5!</p>"
-        onInit={ editor => {
+        onReady={ editor => {
           // You can store the "editor" and use when it is needed.
           console.log( 'Editor is ready to use!', editor );
+          ipcRenderer.send('pull-data', null);
+          ipcRenderer.on('Async-reply', (event, result) => {
+            console.log(result);
+            editor.setData(result);
+          });
 
         } }
         onChange={ ( event, editor ) => {
