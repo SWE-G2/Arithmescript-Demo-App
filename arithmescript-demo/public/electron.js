@@ -2,6 +2,9 @@ const path = require("path");
 
 const { app, BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
+const {ipcMain} = require('electron');
+const fs = require('fs');
+// const defaultDataDir = remote.app.getPath("userData");
 
 function createWindow() {
   // Create the browser window.
@@ -9,7 +12,8 @@ function createWindow() {
     width: 1400,
     height: 1200,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      preload: path.join(app.getAppPath(), 'preload.js')
     }
   });
 
@@ -48,6 +52,17 @@ app.on("activate", () => {
     createWindow();
   }
 });
+
+ipcMain.on('asynchronous-message', (event, arg) => {
+  console.log("heyyyy",arg) // prints "heyyyy ping"
+  fs.writeFile("data/test.txt", arg, err =>{
+    if(err){
+      console.log(err);
+      return;
+    }
+  })
+
+})
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

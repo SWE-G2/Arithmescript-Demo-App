@@ -9,11 +9,13 @@ import {
   SidebarHeader,
   SidebarFooter,
   SidebarContent,
+  SubMenu
 } from "react-pro-sidebar";
 
 //import icons from react icons
-import { FaList, FaRegHeart } from "react-icons/fa";
+import { FaList, FaRegHeart, FaPlusCircle } from "react-icons/fa";
 import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
+
 import { RiPencilLine } from "react-icons/ri";
 import { BiCog } from "react-icons/bi";
 
@@ -21,55 +23,64 @@ import { BiCog } from "react-icons/bi";
 //import sidebar css from react-pro-sidebar module and our custom css
 import "react-pro-sidebar/dist/css/styles.css";
 import "./header.css";
+// import getFile from "../../functions/saveText.js";
 
 
-const Header = () => {
+const currentPages = ["test"];
+//currentPages will have to be imported from data folder, each file will be a page.
 
-    //create initial menuCollapse state using useState hook
-    const [menuCollapse, setMenuCollapse] = useState(false)
+const listPages = currentPages.map((name, i) =>
+  <MenuItem>{name + i}</MenuItem>
+); //maps current pages that already exist to the navbar.
 
-    //create a custom function that will change menucollapse state from false to true and true to false
-  const menuIconClick = () => {
-    //condition checking to change state from true to false and vice versa
-    menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
+const Item = () => {
+  return <MenuItem>Test</MenuItem>
+}
+
+
+export class Header extends React.Component {
+  state = { // Keeps track of pages that are added when user clicks New Page button.
+    pages: []
   };
 
-  return (
-    <>
-      <div id="header">
-          {/* collapsed props to change menu size using menucollapse state */}
-        <ProSidebar collapsed={menuCollapse}>
-          <SidebarHeader>
-          <div className="logotext">
-              {/* small and big change using menucollapse state */}
-              <p>{menuCollapse ? "Logo" : "ArithmeScript"}</p>
-            </div>
-            <div className="closemenu" onClick={menuIconClick}>
-                {/* changing menu collapse icon on click */}
-              {menuCollapse ? (
-                <FiArrowRightCircle/>
-              ) : (
-                <FiArrowLeftCircle/>
-              )}
-            </div>
-          </SidebarHeader>
-          <SidebarContent>
-            <Menu iconShape="square">
-              <MenuItem active={true} icon={<FiHome />}>
-                Home
-              </MenuItem>
-              <MenuItem icon={<FaList />}>Category</MenuItem>
-            </Menu>
-          </SidebarContent>
-          <SidebarFooter>
-            <Menu iconShape="square">
-              <MenuItem icon={<BiCog />}>Settings</MenuItem>
-            </Menu>
-          </SidebarFooter>
-        </ProSidebar>
-      </div>
-    </>
-  );
-};
+  addPage = () => {//this function will also have to somehow create a new file to store the contents of the page.
+    this.setState({
+      pages: [...this.state.pages, <Item />]
+    })
+    // getFile.getFile();
+  }
 
-export default Header;
+  render() {
+    return (
+      <>
+        <div id="header">
+            {/* collapsed props to change menu size using menucollapse state */}
+          <ProSidebar>
+            <SidebarHeader>
+            <div className="logotext">
+              </div>
+
+            </SidebarHeader>
+            <SidebarContent>
+              <Menu iconShape="round">
+                <MenuItem active={true} icon={<FiHome />}>
+                  Home
+                </MenuItem>
+                {listPages}
+                {this.state.pages}
+                <MenuItem
+                icon={<FaPlusCircle />} onClick={this.addPage}>New Page</MenuItem>
+
+              </Menu>
+            </SidebarContent>
+            <SidebarFooter>
+              <Menu iconShape="square">
+                <MenuItem icon={<BiCog />}>Settings</MenuItem>
+              </Menu>
+            </SidebarFooter>
+          </ProSidebar>
+        </div>
+      </>
+    );
+  }
+}
