@@ -104,7 +104,7 @@ if (WebAssembly) {
   }
 
   const go = new Go();
-  WebAssembly.instantiateStreaming(fetch("../bin/asparser.wasm"), go.importObject).then((result) => {
+  WebAssembly.instantiateStreaming(fetch("asparser.wasm"), go.importObject).then((result) => {
     go.run(result.instance);
 
     dialog.showMessageBox({ message: ConvertASToLatex("8th root 256 times 7; root of 16;") });
