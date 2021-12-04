@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-require("./wasm_exec");
+const { dialog } = require("electron");
+require("./wasm_exec.js");
 
 
 // async function test(){
@@ -65,30 +66,54 @@ require("./wasm_exec");
 // 	process.exit(1);
 // });
 
-if (!WebAssembly.instantiateStreaming) {
-       // polyfill
-       WebAssembly.instantiateStreaming = async (resp, importObject) => {
-         const source = await (await resp).arrayBuffer();
-         return await WebAssembly.instantiate(source, importObject);
-       };
-     }
+// if (!WebAssembly.instantiateStreaming) {
+//        // polyfill
+//        WebAssembly.instantiateStreaming = async (resp, importObject) => {
+//          const source = await (await resp).arrayBuffer();
+//          return await WebAssembly.instantiate(source, importObject);
+//        };
+//      }
 
-const go = new Go();
+// const go = new Go();
 
-let mod, inst;
+// let mod, inst;
 
 
-WebAssembly.instantiateStreaming(fetch("asparser.wasm"), go.importObject).then(
-        result => {
-          mod = result.module;
-          inst = result.instance;
-          document.getElementById("runButton").disabled = false;
-        }
-      );
+// WebAssembly.instantiateStreaming(fetch("asparser.wasm"), go.importObject).then(
+//         result => {
+//           mod = result.module;
+//           inst = result.instance;
+//           document.getElementById("runButton").disabled = false;
+//         }
+//       );
 
-async function run() {
-  await go.run(inst);
-  inst = await WebAssembly.instantiate(mod, go.importObject); // reset instance
+// async function run() {
+//   await go.run(inst);
+//   inst = await WebAssembly.instantiate(mod, go.importObject); // reset instance
+// }
+
+// run();
+
+if (WebAssembly) {
+  // WebAssembly.instantiateStreaming is not currently available in Safari
+  if (WebAssembly && !WebAssembly.instantiateStreaming) { // polyfill
+    WebAssembly.instantiateStreaming = async (resp, importObject) => {
+      const source = await (await resp).arrayBuffer();
+      return await WebAssembly.instantiate(source, importObject);
+    };
+  }
+
+  const go = new Go();
+  WebAssembly.instantiateStreaming(fetch("../bin/asparser.wasm"), go.importObject).then((result) => {
+    go.run(result.instance);
+
+    dialog.showMessageBox({ message: ConvertASToLatex("8th root 256 times 7; root of 16;") });
+
+  });
+
+} else {
+  console.log("WebAssembly is not supported in your browser")
 }
 
-run();
+
+

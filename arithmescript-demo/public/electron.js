@@ -1,16 +1,17 @@
 const path = require("path");
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, dialog } = require("electron");
 const isDev = require("electron-is-dev");
 const {ipcMain} = require('electron');
 const fs = require('fs');
 
 const crypto = require("crypto");
+const { electron } = require("process");
 globalThis.crypto = {
 	getRandomValues(b) {
 		crypto.randomFillSync(b);
 	},
 };
-const wasm_exec = require("./wasm_exec_node");
+// const wasm_exec = require("./wasm_exec_node.js.old");
 
 function createWindow() {
   // Create the browser window.
@@ -70,16 +71,17 @@ ipcMain.on('asynchronous-message', (event, arg) => {
       return;
     }
   })
-  wasm_exec;
+  // wasm_exec;
   // console.log(wasm_exec);
+  dialog.showMessageBox({ message: ConvertASToLatex("(a times b) times (c times d)") });
 })
 
 ipcMain.on('pull-data', (event, arg) =>{
-  fs.readFile("data/test.txt", function(err, data){
-    let test = JSON.parse(data);
+  // fs.readFile("data/test.txt", function(err, data){
+  //   let test = JSON.parse(data);
 
-    event.sender.send('Async-reply', test);
-  });
+  //   event.sender.send('Async-reply', test);
+  // });
 
 
 });
