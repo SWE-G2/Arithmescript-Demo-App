@@ -12,7 +12,6 @@ function App() {
     <Header />
     <h2>Select a page!</h2>
         <TextArea />
-
     </div>
   );
 }

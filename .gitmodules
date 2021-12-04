@@ -1,0 +1,3 @@
+[submodule "arithmescript-demo/src/functions/arithmescript-parser"]
+	path = arithmescript-demo/src/functions/arithmescript-parser
+	url = https://github.com/SWE-G2/Arithmescript-Parser.git

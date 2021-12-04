@@ -1,10 +1,16 @@
 const path = require("path");
-
 const { app, BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
 const {ipcMain} = require('electron');
 const fs = require('fs');
-// const defaultDataDir = remote.app.getPath("userData");
+
+const crypto = require("crypto");
+globalThis.crypto = {
+	getRandomValues(b) {
+		crypto.randomFillSync(b);
+	},
+};
+const wasm_exec = require("./wasm_exec_node");
 
 function createWindow() {
   // Create the browser window.
@@ -13,7 +19,7 @@ function createWindow() {
     height: 1200,
     webPreferences: {
       nodeIntegration: true,
-      preload: path.join(app.getAppPath(), 'preload.js')
+      preload: path.join(__dirname, 'preload.js')
     }
   });
 
@@ -53,6 +59,9 @@ app.on("activate", () => {
   }
 });
 
+
+
+
 ipcMain.on('asynchronous-message', (event, arg) => {
   fs.writeFile("data/test.txt", arg, err =>{
     console.log("writing to file");
@@ -61,6 +70,8 @@ ipcMain.on('asynchronous-message', (event, arg) => {
       return;
     }
   })
+  wasm_exec;
+  // console.log(wasm_exec);
 })
 
 ipcMain.on('pull-data', (event, arg) =>{
@@ -69,5 +80,6 @@ ipcMain.on('pull-data', (event, arg) =>{
 
     event.sender.send('Async-reply', test);
   });
+
 
 });
