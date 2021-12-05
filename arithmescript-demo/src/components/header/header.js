@@ -17,7 +17,7 @@ import { FaList, FaRegHeart, FaPlusCircle } from "react-icons/fa";
 import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
 
 import { RiPencilLine } from "react-icons/ri";
-import { BiCog } from "react-icons/bi";
+import { BiCog, BiHelpCircle } from "react-icons/bi";
 
 
 //import sidebar css from react-pro-sidebar module and our custom css
@@ -50,6 +50,11 @@ export class Header extends React.Component {
     // getFile.getFile();
   }
 
+  //This function opens a new window when the help button is pushed
+  popUp = () => {
+    window.open('https://cdesantiago94.gitbook.io/arithmescript/','Arithmescript Syntax', 'width=1150, height=600')
+  }
+
   render() {
     return (
       <>
@@ -75,7 +80,7 @@ export class Header extends React.Component {
             </SidebarContent>
             <SidebarFooter>
               <Menu iconShape="square">
-                <MenuItem icon={<BiCog />}>Settings</MenuItem>
+                <MenuItem icon={<BiHelpCircle />} onClick={this.popUp}>Help</MenuItem>
               </Menu>
             </SidebarFooter>
           </ProSidebar>
