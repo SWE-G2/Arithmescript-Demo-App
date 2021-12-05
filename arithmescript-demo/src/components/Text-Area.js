@@ -23,7 +23,10 @@ export class TextArea extends React.Component {
   }
 
   saveContent = debounce((content) => {
+
+    let testing = convertToRaw(content);
     ipcRenderer.send('asynchronous-message', JSON.stringify(convertToRaw(content)));
+    ipcRenderer.send('call-parser', testing.blocks);
     console.log("Saving data...");
   }, 1000);
 

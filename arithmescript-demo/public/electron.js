@@ -1,5 +1,10 @@
 const path = require("path");
+<<<<<<< Updated upstream
 const { app, BrowserWindow, dialog } = require("electron");
+=======
+const glob = require('glob');
+const { app, BrowserWindow } = require("electron");
+>>>>>>> Stashed changes
 const isDev = require("electron-is-dev");
 const {ipcMain} = require('electron');
 const fs = require('fs');
@@ -14,13 +19,14 @@ globalThis.crypto = {
 // const wasm_exec = require("./wasm_exec_node.js.old");
 
 function createWindow() {
+  loadMainProcess();
   // Create the browser window.
   const win = new BrowserWindow({
     width: 1400,
     height: 1200,
     webPreferences: {
       nodeIntegration: true,
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.resolve(app.getAppPath(), 'preload.js')
     }
   });
 
@@ -85,3 +91,8 @@ ipcMain.on('pull-data', (event, arg) =>{
 
 
 });
+
+function loadMainProcess() {
+  const files = glob.sync(path.join(__dirname, 'main-process/*.js'));
+  files.forEach((file) => require(file));
+}

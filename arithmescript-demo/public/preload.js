@@ -1,8 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 const { dialog } = require("electron");
+window.electron = require('electron');
+// const {ipcMain} = require('electron');
+const { contextBridge } = require('electron');
 require("./wasm_exec.js");
 
+<<<<<<< Updated upstream
 
 // async function test(){
 //
@@ -94,6 +98,17 @@ require("./wasm_exec.js");
 
 // run();
 
+=======
+// ipcMain.on('call-parser', (event,data)=> {
+//   let x = Object.keys(data).length;
+//   let text = data[Object.keys(data)[Object.keys(data).length - 1]].text;
+//   let key = data[Object.keys(data)[Object.keys(data).length - 1]].key;
+//     console.log("parse has been called.", text);
+//     console.log("the key for the last val is: ", key);
+//
+// });
+
+>>>>>>> Stashed changes
 if (WebAssembly) {
   // WebAssembly.instantiateStreaming is not currently available in Safari
   if (WebAssembly && !WebAssembly.instantiateStreaming) { // polyfill
@@ -115,5 +130,20 @@ if (WebAssembly) {
   console.log("WebAssembly is not supported in your browser")
 }
 
+<<<<<<< Updated upstream
 
 
+=======
+window.test = function(){
+  console.log("Testing window.test");
+}
+
+// const { contextBridge } = require('electron')
+//
+// contextBridge.exposeInMainWorld(
+//   'electron',
+//   {
+//     doThing: () => console.log("Hey");
+//   }
+// )
+>>>>>>> Stashed changes
